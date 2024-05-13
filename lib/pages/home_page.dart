@@ -78,30 +78,8 @@ class _HomePageState extends State<HomePage> {
         return DialogBox(
           isCreatePage: isCreatePage,
           task: task,
-
-          // onSave: saveNewTask,
-          // onCancel: () => Navigator.of(context).pop(),
         );
       },
     );
-  }
-
-  // void saveNewTask() {
-  //   BlocProvider.of<TaskBloc>(context).add(SaveTaskEvent(TaskModel(title: titleController.text, description: descriptionController.text, status: false)));
-  //   Navigator.of(context).pop();
-  // }
-
-  void checkBoxChanged(bool? value, int index) {
-    setState(() {
-      // taskList[index]?.status = !(taskList[index]?.status ?? false);
-    });
-    // db.updateDataBase();
-  }
-
-  void deleteTask(int index) {
-    // setState(() {
-    //   taskList.removeAt(index);
-    // });
-    // db.updateDataBase();
   }
 }

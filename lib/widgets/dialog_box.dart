@@ -37,13 +37,6 @@ class _DialogBoxState extends State<DialogBox> {
     formattedDate = DateFormat('dd/MM/yyyy').format(selectedDate);
   }
 
-  // @override
-  // void initState() {
-  //   titleController.text = widget.task?.title ?? '';
-  //   descriptionController.text = widget.task?.description ?? '';
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -127,16 +120,15 @@ class _DialogBoxState extends State<DialogBox> {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
-        // Refer step 1
         firstDate: DateTime.now(),
         lastDate: DateTime(2099),
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
               colorScheme: ColorScheme.light(
-                primary: Colors.indigo, // header background color
-                onPrimary: Colors.white, // header text color
-                onSurface: Colors.black, // body text color
+                primary: Colors.indigo,
+                onPrimary: Colors.white,
+                onSurface: Colors.black,
               ),
             ),
             child: child!,
