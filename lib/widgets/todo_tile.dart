@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
 import 'package:todo_app/bloc/task_bloc.dart';
 import 'package:todo_app/database/task_hive_model.dart';
 
@@ -53,11 +54,16 @@ class _ToDoTileState extends State<ToDoTile> {
                 ),
               ],
             ),
-            IconButton(
-                onPressed: (){
-                  BlocProvider.of<TaskBloc>(context).add(DeleteTaskEvent(widget.task?.id ?? ''));
-                },
-                icon: Icon(Icons.delete, color: Colors.black,))
+            Row(
+              children: [
+                Text('${DateFormat('dd/MM/yyyy').format(widget.task?.date ?? DateTime.now())}'),
+                IconButton(
+                    onPressed: (){
+                      BlocProvider.of<TaskBloc>(context).add(DeleteTaskEvent(widget.task?.id ?? ''));
+                    },
+                    icon: Icon(Icons.delete, color: Colors.black,)),
+              ],
+            )
           ],
         ),
       ),

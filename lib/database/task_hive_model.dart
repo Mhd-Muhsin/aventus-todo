@@ -3,7 +3,7 @@ part 'task_hive_model.g.dart';
 
 @HiveType(typeId: 0)
 class TaskModel extends HiveObject{
-  TaskModel({this.id, this.title, this.description, this.status});
+  TaskModel({this.id, this.title, this.description, this.status, this.date});
 
   static const String boxKey = 'task';
 
@@ -18,4 +18,7 @@ class TaskModel extends HiveObject{
 
   @HiveField(3)
   bool? status;
+
+  @HiveField(4)
+  DateTime? date;
 }

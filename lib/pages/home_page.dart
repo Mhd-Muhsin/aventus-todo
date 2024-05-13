@@ -39,8 +39,6 @@ class _HomePageState extends State<HomePage> {
                   return GestureDetector(
                     child: ToDoTile(
                       task: taskList[index],
-                      // onChanged: (value) => checkBoxChanged(value, index),
-                      // deleteFunction: (context) => deleteTask(index),
                     ),
                     onTap: (){
                       showTaskDialog(isCreatePage: false, task: taskList[index]);

@@ -18,7 +18,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       print(taskList.map((e) => e?.title));
       print(taskList.map((e) => e?.description));
       print(taskList.map((e) => e?.status));
-
+      print(taskList.map((e) => e?.date));
       emit(TaskListLoadedState(taskList));
     });
 
@@ -78,6 +78,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       if(task.title != null) dbTaskData?.title = task.title;
       if(task.description != null) dbTaskData?.description = task.description;
       if(task.status != null) dbTaskData?.status = task.status;
+      if(task.date != null) dbTaskData?.date = task.date;
       await taskBox.put(task.id ?? '', dbTaskData!);
     } catch (e) {
       print(e);

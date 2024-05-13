@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:todo_app/bloc/task_bloc.dart';
 import 'package:todo_app/database/task_hive_model.dart';
 
@@ -23,35 +25,44 @@ class DialogBox extends StatefulWidget {
 class _DialogBoxState extends State<DialogBox> {
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
+  late DateTime selectedDate;
+  late String formattedDate;
 
   @override
   void initState() {
+    super.initState();
     titleController.text = widget.task?.title ?? '';
     descriptionController.text = widget.task?.description ?? '';
-    super.initState();
+    selectedDate = widget.task?.date ?? DateTime.now();
+    formattedDate = DateFormat('dd/MM/yyyy').format(selectedDate);
   }
+
+  // @override
+  // void initState() {
+  //   titleController.text = widget.task?.title ?? '';
+  //   descriptionController.text = widget.task?.description ?? '';
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: Colors.yellow[300],
+      backgroundColor: Colors.white,
       content: Container(
-        height: 220,
+        height: 260,
         child: Form(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 08,),
               TextFormField(
                 controller: titleController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: "Task title",
                 ),
-                validator: (value){
-
-                },
               ),
-
               TextField(
                 controller: descriptionController,
                 decoration: InputDecoration(
@@ -59,7 +70,17 @@ class _DialogBoxState extends State<DialogBox> {
                   hintText: "Task Description",
                 ),
               ),
-
+              GestureDetector(
+                child: Row(
+                  children: [
+                    Text("Date: "),
+                    Text('${formattedDate}'),
+                  ],
+                ),
+                onTap: (){
+                  _selectDate(context);
+                },
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -67,9 +88,9 @@ class _DialogBoxState extends State<DialogBox> {
                     if (titleController.text.isNotEmpty) {
                       Navigator.of(context).pop();
                       if (widget.isCreatePage) {
-                        BlocProvider.of<TaskBloc>(context).add(SaveTaskEvent(TaskModel(title: titleController.text, description: descriptionController.text, status: false)));
+                        BlocProvider.of<TaskBloc>(context).add(SaveTaskEvent(TaskModel(title: titleController.text, description: descriptionController.text, status: false, date: selectedDate)));
                       } else{
-                        BlocProvider.of<TaskBloc>(context).add(EditTaskEvent(TaskModel(id: widget.task?.id, title: titleController.text, description: descriptionController.text, status: widget.task?.status)));
+                        BlocProvider.of<TaskBloc>(context).add(EditTaskEvent(TaskModel(id: widget.task?.id, title: titleController.text, description: descriptionController.text, status: widget.task?.status, date: selectedDate)));
                       }
                     } else {
                       showToast('Title cannot be empty');
@@ -99,5 +120,32 @@ class _DialogBoxState extends State<DialogBox> {
       textColor: Colors.white,
       fontSize: 16.0,
     );
+  }
+
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        // Refer step 1
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2099),
+        builder: (context, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: ColorScheme.light(
+                primary: Colors.indigo, // header background color
+                onPrimary: Colors.white, // header text color
+                onSurface: Colors.black, // body text color
+              ),
+            ),
+            child: child!,
+          );
+        });
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+        formattedDate = DateFormat('dd/MM/yyyy').format(selectedDate);
+      });
   }
 }
